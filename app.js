@@ -43,7 +43,9 @@ client.on('messageCreate', async message => {
 
         let dlmessage = await message.reply("Downloading... (if this doesn't change within 10 seconds, chances are there is an error. Ping Arkane so he can fix it.");
 
-        new easydl(downloadLink, "./video.mp4")
+        new easydl(downloadLink, "./video.mp4", {
+            connections: 1
+        })
             .on("metadata", (metadata) => {
                 dlmessage.edit(`Downloading... \nFile Size: ${humanReadable.fromBytes(metadata.size)}`);
             })
