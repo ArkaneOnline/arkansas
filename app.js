@@ -50,7 +50,9 @@ client.on('messageCreate', async message => {
                 dlmessage.edit(`Downloading... \nFile Size: ${humanReadable.fromBytes(metadata.size)}`);
             })
             .on("progress", ({ details, total }) => {
-                dlmessage.edit(`Downloading... \nCurrent Progress: **${total.percentage.toString().split(".")[0]}%** \nDownload Speed: **${humanReadable.fromBytes(total.speed)}/s**`);
+                setTimeout(() => {
+                    dlmessage.edit(`Downloading... \nCurrent Progress: **${total.percentage.toString().split(".")[0]}%** \nDownload Speed: **${humanReadable.fromBytes(total.speed)}/s**`);
+                }, 5000);
             })
             .on("error", (err) => {
                 if(fs.existsSync("video.mp4.$$0$PART")) fs.unlinkSync("video.mp4.$$0$PART");
