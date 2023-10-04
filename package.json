@@ -1,0 +1,17 @@
+{
+  "name": "gdrive-downloader-bot",
+  "version": "1.0.0",
+  "description": "A bot that downloads files from Google Drive",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Arkane",
+  "license": "MIT",
+  "dependencies": {
+    "@tsmx/human-readable": "^2.0.1",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
+    "easydl": "^1.1.0"
+  }
+}
