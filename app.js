@@ -127,7 +127,7 @@ async function downloadFile(authClient) {
 
     } catch (err) {
         // TODO(developer) - Handle error
-        console.error(err);
+        console.log(err);
         eventEmitter.emit("failure", fileName, fileSize);
     }
 }
