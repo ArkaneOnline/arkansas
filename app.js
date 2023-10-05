@@ -185,7 +185,7 @@ client.on('messageCreate', async message => {
                         currentFileSize = fs.statSync(`${fileName}`).size;
                         checkProgress();
                     }
-                }, 1500)
+                }, 3000)
             }
             checkProgress();
         });
