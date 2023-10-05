@@ -215,7 +215,7 @@ client.on('messageCreate', async message => {
                 if(fs.existsSync(`${fileName}`)) fs.unlinkSync(`${fileName}`);
                 if(fs.existsSync(`${fileName.slice(0, -4)}.txt`)) fs.unlinkSync(`${fileName.slice(0, -4)}.txt`);
                 if(fs.existsSync(`${fileName.slice(0, -4)}-mediainfo.txt`)) fs.unlinkSync(`${fileName.slice(0, -4)}-mediainfo.txt`);
-                message.channel.send("Files Removed from server! You may start another download.");
+                return message.channel.send("Files Removed from server! You may start another download.");
             }, 2000);
         }
 
