@@ -212,7 +212,7 @@ client.on('messageCreate', async message => {
             setTimeout(() => {
                 dlmessage.edit(`Downloaded ${fileName}! \nRunning exiftool and mediainfo...`);
                 downloadComplete = "yes";
-            }, 2000)
+            }, 3500)
         });
 
         function checkDownloaded() {
@@ -224,7 +224,7 @@ client.on('messageCreate', async message => {
                     shell.exec(`mediainfo --LogFile="${fileName.slice(0, -4)}-mediainfo.txt" "${fileName}"`);
                     sendToDiscord();
                 }
-            }, 10000)
+            }, 15000)
         }
 
         checkDownloaded();
