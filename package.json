@@ -4,11 +4,17 @@
   "description": "A bot that downloads files from Google Drive",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node ."
   },
   "author": "Arkane",
   "license": "MIT",
   "dependencies": {
-    
+    "@google-cloud/local-auth": "^2.1.0",
+    "@tsmx/human-readable": "^2.0.1",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
+    "exiftool-vendored": "^23.3.0",
+    "googleapis": "^105.0.0",
+    "shelljs": "^0.8.5"
   }
 }
