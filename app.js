@@ -18,6 +18,7 @@ const { file } = require('googleapis/build/src/apis/file');
 const eventEmitter = new EventEmitter();
 const hr = require("@tsmx/human-readable");
 const shell = require("shelljs");
+const filehound = require("filehound");
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
@@ -157,6 +158,12 @@ client.on('messageCreate', async message => {
     }
 
     if (command === "=download") {
+        const fileSearchResults = await filehound.create()
+            .ext("mp4")
+            .find();
+
+        if (fileSearchResults.length > 0) return message.reply("Another Download is currently running at the moment. Please wait for that download to finish, then try again.");
+
         if (args.length === 0) {
             await message.reply("Please provide a download link.");
             return;
@@ -173,7 +180,11 @@ client.on('messageCreate', async message => {
         FILEID = downloadLink.slice(32).split("/")[0];
 
         let dlmessage = await message.reply(`Downloading... \nThis may take awhile, at the moment, there is no progress bar.`);
-        authorize().then(downloadFile).catch(console.error);
+        authorize().then(downloadFile).catch((error) => {
+            console.log(`[err] ${error}`);
+            removeFiles();
+            return message.reply("A timeout error occured while the file was downloading. <@208779984276291585> check the logs.");
+        });
 
         eventEmitter.on("downloading", (fileName, fileSize) => {
             dlmessage.edit(`Downloading **${fileName}** \nFile Size: **${hr.fromBytes(fileSize)}**`);
@@ -201,9 +212,9 @@ client.on('messageCreate', async message => {
 
         function removeFiles() {
             setTimeout(() => {
-                fs.unlinkSync(`${fileName.slice(0, -4)}.txt`);
-                fs.unlinkSync(`${fileName.slice(0, -4)}-mediainfo.txt`);
-                fs.unlinkSync(`${fileName}`);
+                if(fs.existsSync(`${fileName}`)) fs.unlinkSync(`${fileName}`);
+                if(fs.existsSync(`${fileName.slice(0, -4)}.txt`)) fs.unlinkSync(`${fileName.slice(0, -4)}.txt`);
+                if(fs.existsSync(`${fileName.slice(0, -4)}-mediainfo.txt`)) fs.unlinkSync(`${fileName.slice(0, -4)}-mediainfo.txt`);
                 message.channel.send("Files Removed from server! You may start another download.");
             }, 2000);
         }

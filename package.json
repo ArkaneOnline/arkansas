@@ -14,6 +14,7 @@
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
     "exiftool-vendored": "^23.3.0",
+    "filehound": "^1.17.6",
     "googleapis": "^105.0.0",
     "shelljs": "^0.8.5"
   }
