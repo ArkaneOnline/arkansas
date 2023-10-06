@@ -123,12 +123,14 @@ async function downloadFile(authClient) {
         eventEmitter.emit("downloading", fileName, fileSize);
 
         file.data.on('end', () => eventEmitter.emit("downloaded", fileName));
+        file.data.on("error", () => eventEmitter.emit("failure", fileName, fileSize));
         file.data.pipe(fileStream);
 
     } catch (err) {
         // TODO(developer) - Handle error
-        console.log(err);
-        eventEmitter.emit("failure", fileName, fileSize);
+        console.log("here is the error, this better fucking work");
+        console.error(err);
+        throw err;
     }
 }
 
