@@ -123,7 +123,6 @@ async function downloadFile(authClient) {
         eventEmitter.emit("downloading", fileName, fileSize);
 
         file.data.on('end', () => eventEmitter.emit("downloaded", fileName));
-        file.data.on("error", () => eventEmitter.emit("failure", fileName, fileSize));
         file.data.pipe(fileStream);
 
     } catch (err) {
@@ -182,7 +181,12 @@ client.on('messageCreate', async message => {
         FILEID = downloadLink.slice(32).split("/")[0];
 
         let dlmessage = await message.reply(`Downloading... \nThis may take awhile, at the moment, there is no progress bar.`);
-        authorize().then(downloadFile).catch(console.error);
+        try {
+            authorize().then(downloadFile).catch(console.error);
+        } catch (error) {
+            console.error(error);
+            eventEmitter.emit("failure", fileName, fileSize);
+        }
 
         eventEmitter.on("failure", (fileName, fileSize) => {
             message.reply("A connection timeout has occured. Please retry the download. <@208779984276291585> should probably take a look at the logs.");
