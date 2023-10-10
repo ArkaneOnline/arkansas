@@ -176,6 +176,8 @@ client.on('messageCreate', async message => {
         
         let downloadLink = args[0];
         let currentFileSize;
+        let oldFileSize = 0;
+        let downloadSpeed;
         let downloadComplete;
         if(!downloadLink.startsWith("https://drive.google.com/file/d/")) return message.reply("Only Google Drive links are supported.");
         FILEID = downloadLink.slice(32).split("/")[0];
@@ -200,8 +202,10 @@ client.on('messageCreate', async message => {
             function checkProgress() {
                 setTimeout(() => {
                     if (currentFileSize<fileSize) {
-                        dlmessage.edit(`Downloading **${fileName}** \nProgress: **${hr.fromBytes(currentFileSize)} / ${hr.fromBytes(fileSize)}**`);
                         currentFileSize = fs.statSync(`${fileName}`).size;
+                        downloadSpeed = currentFileSize - oldFileSize;
+                        dlmessage.edit(`Downloading **${fileName}** \nProgress: **${hr.fromBytes(currentFileSize)} / ${hr.fromBytes(fileSize)}** \nSpeed: **${hr.fromBytes(downloadSpeed / 3)}/s**`);
+                        oldFileSize = currentFileSize;
                         checkProgress();
                     }
                 }, 3000)
